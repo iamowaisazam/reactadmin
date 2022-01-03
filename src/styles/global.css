@@ -1,0 +1,297 @@
+a{
+    text-decoration: none;
+}
+
+
+
+
+
+/* Font Family */
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-ExtraLight.ttf');
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-Light.ttf');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-Regular.ttf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-SemiBold.ttf');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-Bold.ttf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-ExtraBold.ttf');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('./fonts/montserrat/Montserrat-Bold.ttf');
+    font-weight: 900;
+}
+
+
+
+/* Poppins */
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-ExtraLight.ttf');
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-Light.ttf');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-Regular.ttf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-SemiBold.ttf');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-Bold.ttf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-ExtraBold.ttf');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: Poppins;
+    src: url('./fonts/poppins/Poppins-Bold.ttf');
+    font-weight: 900;
+}
+
+/* Roboto */
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Thin.ttf');
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Light.ttf');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Regular.ttf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Bold.ttf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url('./fonts/roboto/Roboto-Bold.ttf');
+    font-weight: 900;
+}
+
+
+
+/*---------------------- Colors----------------------------------------- */
+ .text-primary-base{
+     color: #3281f2 ;
+ }
+
+ .text-primary-contrast{
+    color: white;
+ }
+
+ .text-primary-black{
+    color: #6c757d;
+ }
+
+
+
+ .bg-primary-base{
+    background-color: #3281f2;
+}
+
+.bg-primary-contrast{
+   background-color: white;
+}
+
+
+/*--------------Typography------------------------------ */
+
+.font-weight-100{
+    font-weight: 100;
+}
+
+.font-weight-200{
+    font-weight: 200;
+}
+
+.font-weight-300{
+    font-weight: 300;
+}
+
+.font-weight-400{
+    font-weight: 400;
+}
+
+.font-weight-500{
+    font-weight: 500;
+}
+
+.font-weight-600{
+    font-weight: 600;
+}
+
+.font-weight-700{
+    font-weight: 700;
+}
+
+.font-weight-800{
+    font-weight: 800;
+}
+
+.font-weight-900{
+    font-weight: 900;
+}
+
+
+
+
+.font-poppins{
+    font-family: Poppins;
+}
+
+.font-montserrat{
+ font-family: Montserrat;
+}
+
+.font-roboto{
+    font-family: Roboto;
+}
+
+
+
+/*--------------presets------------------------------ */
+
+/* Buttons */
+.btn-1{
+    font-size: 14px;
+    border: 0px;
+    border-radius: 2px;
+    padding: 6px 19px;
+}
+
+.form-label{
+    font-size: 15px;
+    padding-bottom: 7px;
+    color: #5e5959;
+}
+
+.form-control{
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+}
+
+
+
+
+
+
+
+
+/* // X-Small devices (portrait phones, less than 576px) */
+/* // No media query for `xs` since this is the default in Bootstrap */
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+
+
+
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+
+
+
+}
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+
+
+}
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+
+
+}
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+
+
+
+}
