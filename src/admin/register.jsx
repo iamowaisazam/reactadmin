@@ -1,17 +1,32 @@
-import React,{useState} from 'react'
+import axios from 'axios';
+import React,{useState,useEffect} from 'react'
 import {Link,useNavigate  } from 'react-router-dom';
 
 function Register() {
 
     let nav = useNavigate();
 
+
+
+
+    useEffect(() => {
+        let token = localStorage.getItem('token');
+        if(token != null){
+          nav('/admin/dashboard');
+        }
+  
+      },[]);
+
     const handle = (e) => {
 
         e.preventDefault();
 
+        let name = e.target.name;
         let password = e.target.password;
         let email = e.target.email;
-        let validation = true;
+
+
+
 
         // if(email.value != 'iamowaisazam@gmail.com'){
         //     email.nextSibling.innerHTML = 'incorrect Email Address';
@@ -27,11 +42,44 @@ function Register() {
         //     password.nextSibling.innerHTML = '';
         // }
 
-        if(validation == true){
-            nav('/admin/login');
+        axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+            name: name.value,
+            email: email.value,
+            password: password.value
+          }).then(function (response) {
 
-            // history.push("/login");
-        }
+                email.nextSibling.innerHTML = '';
+                password.nextSibling.innerHTML = '';
+                name.nextSibling.innerHTML = '';
+
+                if(response.data.message){
+                    nav('/admin/login');
+                }
+          })
+          .catch(function (error) {
+            
+            if(error.response.data.name){
+                name.nextSibling.innerHTML = error.response.data.name[0]; 
+            }else{
+                name.nextSibling.innerHTML = ''; 
+            }
+
+            if(error.response.data.password){
+                password.nextSibling.innerHTML = error.response.data.password[0]; 
+            }else{
+                password.nextSibling.innerHTML = '';
+            }
+
+            if(error.response.data.email){
+                email.nextSibling.innerHTML = error.response.data.email[0]; 
+            }else{
+                email.nextSibling.innerHTML = ''; 
+            }
+            
+
+          });
+
+       
 
     }
 

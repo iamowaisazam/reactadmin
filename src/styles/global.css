@@ -249,6 +249,23 @@ a{
   color: #495057;
 }
 
+.page-title-box {
+    padding: 17px 14px;
+    background: white;
+    margin-bottom: 12px;
+}
+
+.page-title-box h4{
+    font-weight: 400;
+    font-size: 20px !important;
+    color: #000000;
+}
+
+.page-title-box li{
+    font-size: .875rem;
+    color: #000000;
+}
+
 
 
 

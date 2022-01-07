@@ -1,14 +1,13 @@
 import React,{useState} from 'react'
 import Header from '../component/header'
 import Footer from '../component/footer'
+import {Link,useNavigate} from 'react-router-dom';
 
 import { FaPowerOff,FaWindows,FaUserFriends,FaProductHunt,FaPaypal } from "react-icons/fa";
 
 function Layout(Props) {
 
-
     const [menuToggle,SetmenuToggle] = useState(true);
-
     const handle_menuToggle = () => {
        
         if(menuToggle == true){
@@ -28,37 +27,37 @@ function Layout(Props) {
             <div className={menuToggle == false ? 'd-flex sidebar-hide main-content flex-fill ' : 'd-flex main-content flex-fill ' }  >
                     <div className="font-roboto list-container ">
                             <div className="list-item">
-                                <a href="#" > 
+                                <Link to="/admin/dashboard" > 
                                 <span className='icon' > <FaWindows className='' /> </span>
                                 <span className='link-title' >Dashboard</span> 
-                                </a> 
+                                </Link> 
                             </div>
                             <div className="list-item">
-                                <a href="#" > 
+                                <Link to="/admin/dashboard"  > 
                                 <span className='icon' > <FaUserFriends className='' /> </span>
                                 <span className='link-title' >Users</span> 
-                                </a> 
+                                </Link> 
                             </div>
                             <div className="list-item">
-                                <a href="#" > 
+                                <Link to="/admin/dashboard" > 
                                 <span className='icon' > <FaProductHunt className='' /> </span>
                                 <span className='link-title' >Roles</span> 
-                                </a> 
+                                </Link> 
                             </div>
                             <div className="list-item">
-                            <a href="#" > 
+                                <Link to="/admin/dashboard"  > 
                                 <span className='icon' > <FaPaypal className='' /> </span>
                                 <span className='link-title' >Products</span> 
-                                </a> 
+                                </Link> 
                             </div>
                             <div className="list-item">
-                                <a href="#" > 
+                                <Link to="/admin/dashboard" > 
                                 <span className='icon' > <FaProductHunt className='' /> </span>
                                 <span className='link-title' >Roles</span> 
-                                </a> 
+                                </Link> 
                             </div>
                     </div>
-                    <div className="theme-content">
+                    <div className="theme-content flex-fill">
                         {Props.children}
                     </div>
                 </div>
@@ -87,13 +86,13 @@ function Layout(Props) {
                     }
 
                     .icon{
-                        color: #747a80;
+                        color: #012;
                         font-size: 17.5px;
                         padding: 0px 9px;
                     }
 
                     .link-title{
-                        color:#747a80;
+                        color:#012;
                         font-size: 14.5px;
                         font-weight:400;
                     }

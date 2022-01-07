@@ -1,10 +1,14 @@
+import axios from 'axios';
 import react from 'react'
 import { FaPowerOff,FaBars,FaWindowClose,FaUserAlt } from "react-icons/fa";
+import {Link,useNavigate} from 'react-router-dom';
+
 
 
 function Header(Props){
 
      const {handle_menuToggle,menuToggle} = Props;
+     let nav = useNavigate();
 
     const [drop,SetDrop] = react.useState(false);
     const [menu,Setmenu] = react.useState(false);
@@ -17,13 +21,25 @@ function Header(Props){
           }
     }
 
-    // const menuToggle = () => {
-    //     if(menu == true){
-    //       Setmenu(false);
-    //     }else{
-    //       Setmenu(true);
-    //     }
-    // }
+    const Out = () => {
+
+        let token = localStorage.getItem('token');
+        axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+
+        axios.get(`${process.env.REACT_APP_API_URL}/logout`, {})
+        .then(function (response) {
+            if(response.data.message){
+                localStorage.removeItem('token');
+                nav('/admin/login');
+            }
+
+        }).catch(function (error) {
+
+            localStorage.removeItem('token');
+            nav('/admin/login');
+        });
+
+    }
 
   return (<>
 
@@ -38,15 +54,12 @@ function Header(Props){
                             <button onClick={handle_menuToggle} className="header-icons text-primary-contrast"  >
                              {menuToggle == true ? <FaWindowClose /> : <FaBars  />  } 
                             </button>
-                            <a className="text-primary-contrast header-icons " href="/" >
-                              <FaUserAlt className='' />
-                            </a>
-                            <a className="text-primary-contrast header-icons " href="/" >
-                              <FaPowerOff className='' />
-                            </a>
-                        </div>
-                        <div className="d-none d-block d-md-none text-end font-poppins " >
-                          <a className="m-0 p-0 menu-toggle-button text-primary-contrast" href="#" > Menu</a>
+                            <Link  to="/admin/profile" >
+                            <a className="text-primary-contrast header-icons" ><FaUserAlt /></a>
+                            </Link>
+                          
+                            <button onClick={Out} className="text-primary-contrast header-icons" > <FaPowerOff /></button>
+                            
                         </div>
                     </div>
               </div>
@@ -55,6 +68,11 @@ function Header(Props){
            
         
     <style jsx>{`
+
+        a:hover {
+            color: none !important;
+         }
+
         .logo{
           max-width:148px;
 

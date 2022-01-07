@@ -1,9 +1,19 @@
-import React,{useState} from 'react'
-import {Link,useNavigate} from 'react-router-dom';
+import React,{useState,useEffect} from 'react'
+import {Link,useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 function Login() {
 
     let nav = useNavigate();
+
+    useEffect(() => {
+        let token = localStorage.getItem('token');
+        if(token != null){
+          nav('/admin/dashboard');
+        }
+  
+      },[]);
+    
 
     const handle = (e) => {
 
@@ -13,24 +23,38 @@ function Login() {
         let email = e.target.email;
         let validation = true;
 
-        if(email.value != 'iamowaisazam@gmail.com'){
+        if(email.value == ''){
             email.nextSibling.innerHTML = 'incorrect Email Address';
             validation = false;
         }else{
             email.nextSibling.innerHTML = '';
         }
 
-        if(password.value != '123'){
+        if(password.value == ''){
             password.nextSibling.innerHTML = 'incorrect Password';
             validation = false;
         }else{
             password.nextSibling.innerHTML = '';
         }
 
-        if(validation == true){
-            nav('/admin/dashboard');
+        axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+            email: email.value,
+            password: password.value
+          }).then(function (response) {
+
+                email.nextSibling.innerHTML = '';
+                password.nextSibling.innerHTML = '';
+                if(response.data.token){
+                    localStorage.setItem('token', response.data.token);
+                    nav('/admin/dashboard');
+                }
+          })
+          .catch(function (error) {
             
-        }
+            email.nextSibling.innerHTML = error.response.data.message;
+            password.nextSibling.innerHTML = error.response.data.message;
+    
+          });
 
     }
 
@@ -45,12 +69,12 @@ function Login() {
                         <form onSubmit={handle} className='' >
                                 <div className="mb-3">
                                     <label className="form-label">Email Address</label>
-                                    <input type="email" name='email' required className="email form-control" placeholder='Email address'  />
+                                    <input type="email" name='email'  className="email form-control" placeholder='Email address'  />
                                     <div className="text-danger form-text"></div>
                                 </div>
                                 <div className=" mb-3">
                                     <label className="form-label">Password</label>
-                                    <input required name='password' placeholder='Password' type="password" className="password form-control"  />
+                                    <input  name='password' placeholder='Password' type="password" className="password form-control"  />
                                     <div className="text-danger form-text"></div>
                                 </div>
                                 <div className=" mb-3 text-center ">
