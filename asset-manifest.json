@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/reactadmin/static/css/main.a56cf56a.css",
-    "main.js": "/reactadmin/static/js/main.f0b787a8.js",
+    "main.css": "/reactadmin/static/css/main.72e90be3.css",
+    "main.js": "/reactadmin/static/js/main.b14cca04.js",
     "static/media/Montserrat-Regular.ttf": "/reactadmin/static/media/Montserrat-Regular.3cd786652b8a2e9d41f2.ttf",
     "static/media/Montserrat-ExtraBold.ttf": "/reactadmin/static/media/Montserrat-ExtraBold.1944c8d1a118759a4435.ttf",
     "static/media/Montserrat-Bold.ttf": "/reactadmin/static/media/Montserrat-Bold.079ca05d3ded9bc107ab.ttf",
@@ -24,11 +24,11 @@
     "static/media/logo-dark.png": "/reactadmin/static/media/logo-dark.4a7df4c63da98203e20c.png",
     "static/media/logo-light.png": "/reactadmin/static/media/logo-light.683884a6873cc11838e9.png",
     "index.html": "/reactadmin/index.html",
-    "main.a56cf56a.css.map": "/reactadmin/static/css/main.a56cf56a.css.map",
-    "main.f0b787a8.js.map": "/reactadmin/static/js/main.f0b787a8.js.map"
+    "main.72e90be3.css.map": "/reactadmin/static/css/main.72e90be3.css.map",
+    "main.b14cca04.js.map": "/reactadmin/static/js/main.b14cca04.js.map"
   },
   "entrypoints": [
-    "static/css/main.a56cf56a.css",
-    "static/js/main.f0b787a8.js"
+    "static/css/main.72e90be3.css",
+    "static/js/main.b14cca04.js"
   ]
 }
