@@ -1,41 +1,41 @@
-import axios from 'axios';
 import React,{useEffect, useState} from 'react'
-import Layout from './component/layout'
+import {useNavigate} from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux';
+import {Profile_Auth,getAuth} from '../store/actions/AuthAction';
+
+
+
 
 function Profile() {
 
-    const [user,setUser] = useState(null);
-
+    const nav = useNavigate();
+    const dispatch = useDispatch();
+    let {loading,user,validations,success} = useSelector( store => store.AuthReducer);
+    const [form,setForm] = useState({name:'',email:'',password:''});
+        
     useEffect(() => {
 
-        getUser();
-
+        setForm({
+            name:user.name,
+            email:user.email,
+            password:'',
+        })
+        
     },[])
 
-
-    const getUser = () => {
-
-        let token = localStorage.getItem('token');
-        axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
-        axios.get(`${process.env.REACT_APP_API_URL}/auth`, {})
-        .then(function (response) {
-          
-           setUser(response.data.user)
-        }).catch(function (error) {
-
-        });
-
+    const inputChange = (e) => {
+        let name = e.target.name;
+        let value= e.target.value;
+        setForm({...form,[name]:value})
     }
 
-    const handle = (e) => {
+    const handle = async (e) => {
         e.preventDefault();
-       
-        alert('asdasdasd');
-
+        dispatch(Profile_Auth(form));
     }
 
-    return (
-        <Layout> 
+    return (<>
+         <div className="profile-screen">
            <div className="container-fluid">
                  <div className="row">
                         <div className="mt-2 col-12">
@@ -51,35 +51,54 @@ function Profile() {
                         </div>
                   </div>
             </div>
-            <div className='container-fluid' >
-                { user != null ?
-                
-                    <div className="card">
-                        <div className="card-body">
-                            <h4 className="card-title">My Profile </h4>
-                            <form onSubmit={handle} className='py-2' >
-                                <div className="py-2 form-group">
-                                    <label className='form-label' >Username</label>
-                                    <input name='name' type="text" defaultValue={user.name} className="form-control"  />
-                                </div>
-                                <div className="py-2 form-group">
-                                    <label className='form-label'>Email address</label>
-                                    <input name='email' defaultValue={user.email} type="email" className="form-control"  />
-                                </div>
-                                <div className="py-2 form-group">
-                                    <label className='form-label'>Password</label>
-                                    <input name='password' type="password" className="form-control"  />
-                                </div>
-                                <div className="py-2 form-group text-center">
-                                    <input type="submit" className='btn btn-primary' value="Submit" />
-                                </div>
-                            </form>
-                        </div>
-                    </div> : '' 
-               }
-            </div>
-      </Layout>
-    )
+            <div className='profile-container container-fluid' >
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={handle} className='py-2' >
+                            <div className="pb-1 form-group">
+                                <label className='form-label' >Username</label>
+                                <input onChange={inputChange} value={form.name} name='name' className="form-control"  />
+                                { validations?.name? <p> {validations.name} </p> : ''}
+                                
+                            </div>
+                            <div className="pb-1 form-group">
+                                <label className='form-label'>Email address</label>
+                                <input onChange={inputChange} value={form.email} name='email' type="email" className="form-control" />
+                                { validations?.email? <p> {validations.email} </p> : ''}
+                            </div>
+                            <div className="pb-1 form-group">
+                                <label className='form-label'>Password</label>
+                                <input onChange={inputChange} value={form.password} name='password' type="password" className="form-control" placeholder='leave blank' />
+                                { validations?.password? <p> {validations.password} </p> : ''}
+                            </div>
+                            <div className=" pt-3 pb-1 form-group text-center">
+                                <input type="submit" className='btn btn-primary' value="Update" /> 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+           </div>
+       </div>
+
+
+       <style jsx>{`
+
+            .profile-screen{
+      
+            }
+
+            .profile-container{
+            
+            }
+
+            .profile-container p {
+                color:red;
+                padding-top:11px;
+                margin-bottom:0px;
+            }
+                    
+          `}</style>
+ </>)
 }
 
 export default Profile

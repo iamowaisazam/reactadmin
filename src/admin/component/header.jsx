@@ -1,44 +1,17 @@
-import axios from 'axios';
-import react from 'react'
 import { FaPowerOff,FaBars,FaWindowClose,FaUserAlt } from "react-icons/fa";
 import {Link,useNavigate} from 'react-router-dom';
-
-
+import {useDispatch} from 'react-redux'
+import {Logout_Auth} from '../../store/actions/AuthAction'
 
 function Header(Props){
 
-     const {handle_menuToggle,menuToggle} = Props;
-     let nav = useNavigate();
+    let nav = useNavigate();
+    const dispatch = useDispatch();
+    const {handle_menuToggle,menuToggle} = Props;    
 
-    const [drop,SetDrop] = react.useState(false);
-    const [menu,Setmenu] = react.useState(false);
+    const Out = async ()  => {
 
-    const handDrop = () => {
-          if(drop == true){
-            SetDrop(false);
-          }else{
-            SetDrop(true);
-          }
-    }
-
-    const Out = () => {
-
-        let token = localStorage.getItem('token');
-        axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
-
-        axios.get(`${process.env.REACT_APP_API_URL}/logout`, {})
-        .then(function (response) {
-            if(response.data.message){
-                localStorage.removeItem('token');
-                nav('/admin/login');
-            }
-
-        }).catch(function (error) {
-
-            localStorage.removeItem('token');
-            nav('/admin/login');
-        });
-
+        dispatch(Logout_Auth());
     }
 
   return (<>
@@ -54,10 +27,10 @@ function Header(Props){
                             <button onClick={handle_menuToggle} className="header-icons text-primary-contrast"  >
                              {menuToggle == true ? <FaWindowClose /> : <FaBars  />  } 
                             </button>
-                            <Link  to="/admin/profile" >
-                            <a className="text-primary-contrast header-icons" ><FaUserAlt /></a>
+                            <Link to="/admin/profile" >
+                            <span className="text-primary-contrast header-icons" ><FaUserAlt /></span>
                             </Link>
-                          
+
                             <button onClick={Out} className="text-primary-contrast header-icons" > <FaPowerOff /></button>
                             
                         </div>
@@ -78,8 +51,6 @@ function Header(Props){
 
         }
 
-      
-        
         .header-icons{
           padding: 0px 8px;
           font-size: 24px;
@@ -88,10 +59,7 @@ function Header(Props){
           background: transparent;
           border: 0px;
         }
-     
-  
-
-
+    
     `}</style>
   
    </>)

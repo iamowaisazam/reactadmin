@@ -1,143 +1,113 @@
-import axios from 'axios';
 import React,{useState,useEffect} from 'react'
-import {Link,useNavigate  } from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
+import {useDispatch,useSelector} from 'react-redux'
+import {Register_Auth} from '../store/actions/AuthAction'
 
 function Register() {
 
     let nav = useNavigate();
-
-
-
+    const dispatch = useDispatch();
+    let {error,success,validations,loading} = useSelector( store => store.AuthReducer);
+    const [form,setForm] = useState({name:'',email:'',password:''});
 
     useEffect(() => {
-        let token = localStorage.getItem('token');
-        if(token != null){
-          nav('/admin/dashboard');
+        
+        return () => {
+            dispatch({type:'Auth:update',payload:{validation:false,success:false}});
         }
-  
-      },[]);
+    }, [])
 
-    const handle = (e) => {
+    useEffect(() => {
 
-        e.preventDefault();
+        if(success){
+            setForm({
+                name:'',
+                email:'',
+                password:''
+            });
+            nav('/admin/login');
+        }
 
+    },[success])
+
+    
+     const inputChange = (e) => {
         let name = e.target.name;
-        let password = e.target.password;
-        let email = e.target.email;
-
-
-
-
-        // if(email.value != 'iamowaisazam@gmail.com'){
-        //     email.nextSibling.innerHTML = 'incorrect Email Address';
-        //     validation = false;
-        // }else{
-        //     email.nextSibling.innerHTML = '';
-        // }
-
-        // if(password.value != '123'){
-        //     password.nextSibling.innerHTML = 'incorrect Password';
-        //     validation = false;
-        // }else{
-        //     password.nextSibling.innerHTML = '';
-        // }
-
-        axios.post(`${process.env.REACT_APP_API_URL}/register`, {
-            name: name.value,
-            email: email.value,
-            password: password.value
-          }).then(function (response) {
-
-                email.nextSibling.innerHTML = '';
-                password.nextSibling.innerHTML = '';
-                name.nextSibling.innerHTML = '';
-
-                if(response.data.message){
-                    nav('/admin/login');
-                }
-          })
-          .catch(function (error) {
-            
-            if(error.response.data.name){
-                name.nextSibling.innerHTML = error.response.data.name[0]; 
-            }else{
-                name.nextSibling.innerHTML = ''; 
-            }
-
-            if(error.response.data.password){
-                password.nextSibling.innerHTML = error.response.data.password[0]; 
-            }else{
-                password.nextSibling.innerHTML = '';
-            }
-
-            if(error.response.data.email){
-                email.nextSibling.innerHTML = error.response.data.email[0]; 
-            }else{
-                email.nextSibling.innerHTML = ''; 
-            }
-            
-
-          });
-
-       
-
+        let value= e.target.value;
+        setForm({...form,[name]:value})
     }
 
-    return (
-        <div className='font-roboto bg-primary-base login-form vh-100'>
-            <div className="my-auto register_content">
-               <div className="pt-5 row">
-                <div className="shadow-lg px-5 mx-auto bg-primary-contrast col-10 col-md-8 col-lg-6">
+    return (<>
+    
+        <div className='font-roboto bg-primary-base register-screen'>
+          <div className="my-auto register-container">
+                <div className="shadow-lg px-3 px-md-5 bg-primary-contrast">
                         <div className="py-5 register_logo_container text-center ">
                             <img className='logo' src={require('./assets/logo-dark.png')} />
                         </div>
-                        <form onSubmit={handle} className='' >
-                                <div className="mb-3">
-                                    <label className="form-label">Full Name</label>
-                                    <input type="text" name='name' required className="email form-control" placeholder='Full Name'  />
-                                    <div className="text-danger form-text"></div>
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Email Address</label>
-                                    <input type="email" name='email' required className="email form-control" placeholder='Email address'  />
-                                    <div className="text-danger form-text"></div>
-                                </div>
-                                <div className=" mb-3">
-                                    <label className="form-label">Password</label>
-                                    <input required name='password' placeholder='Password' type="password" className="password form-control"  />
-                                    <div className="text-danger form-text"></div>
-                                </div>
-                                <div className=" mb-3 text-center ">
-                                    <input className='bg-primary-base text-primary-contrast  btn-1' type="submit" value="Submit" />
-                                </div>
-                        </form>
-                        <div className="pb-4 text-center ">
+                        <div className="mb-1">
+                            <label className="form-label">Full Name</label>
+                            <input onChange={inputChange} value={form.name}  name='name' className="form-control" placeholder='Full Name'  />
+                            { validations?.name? <p> {validations.name} </p> : ''}
+                        </div>
+                        <div className="mb-1">
+                            <label className="form-label">Email Address</label>
+                            <input type="email" onChange={inputChange} name='email' className="form-control" placeholder='Email address' value={form.email}  />
+                            {validations?.email? <p>{validations.email} </p> : ''} 
+                        </div>
+                        <div className=" mb-1">
+                            <label className="form-label">Password</label>
+                            <input name='password' onChange={inputChange}  placeholder='Password' type="password" value={form.password} className="form-control"  />
+                            <p>{validations?.password? validations.password : ''}</p>
+                        </div>
+                        <div className="mt-3 text-center">
+                          <button  onClick={() => dispatch(Register_Auth(form))  }   type='button'   className='bg-primary-base text-primary-contrast btn-1' >Submit</button>
+                        
+
+                        </div>
+                        <div className="pb-4 pt-3 text-center ">
                             <Link to="/admin/login" className='font-weight-400 text-primary-black register_login_link'  >Already Have Account ?</Link>
                         </div>
-                    </div>
                 </div>
             </div>
+        </div> 
 
+        <style jsx>{`
 
-            <style jsx>{`
-            
-            .register_content
-                padding:20px;
-                margin:auto;
+            .register-screen{
+                justify-content: center;
+                display: flex;
+                min-height:100vh;
+                align-items: center;
             }
 
-            
-            .logo{
+            .register-container{
+                max-width:700px;
+                width:98%;
+            }
+
+            .register-container label{
+                padding-bottom: 0px;
+                padding-top: 5px;
+            }
+
+            .register-container p {
+                color:red;
+                padding-top:11px;
+                margin-bottom:0px;
+            }
+
+            .register-container .logo{
                 max-width:123px;
             }
 
-            .register_login_link{
+           .register-container  .register_login_link{
                 font-size:16px;
             }
-          
+
+        
           `}</style>
-        </div>
-    )
+    </>)
 }
 
 export default Register

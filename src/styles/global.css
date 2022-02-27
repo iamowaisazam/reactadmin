@@ -236,6 +236,9 @@ a{
     padding: 6px 19px;
 }
 
+
+/* form */
+
 .form-label{
     font-size: 15px;
     padding-bottom: 7px;
@@ -266,7 +269,36 @@ a{
     color: #000000;
 }
 
+.form-error{
+    padding-top: 8px;
+    color: red;
+}
 
+
+/* Admin Panel */
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .pointer{
+      cursor: pointer;
+  }
 
 
 

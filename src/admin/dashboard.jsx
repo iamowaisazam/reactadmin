@@ -1,22 +1,29 @@
-import React,{useEffect} from 'react'
-import Layout from './component/layout'
-import {Link,useNavigate} from 'react-router-dom'
+import React,{useEffect,useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux';
 
 function Dashboard() {
 
-    let nav = useNavigate();
+     const dispatch = useDispatch();
 
-    useEffect(() => {
-      let token = localStorage.getItem('token');
-      if(token == null){
-        nav('/admin/login');
-      }
+     let Category = useSelector( store => store.CategoryReducer);
+     let Product = useSelector( store => store.ProductReducer);
+     let Order = useSelector( store => store.OrderReducer);
+     let Customer = useSelector( store => store.CustomerReducer);
 
+    useEffect( () => {
+
+        componentDidMount();
     },[]);
 
+    const componentDidMount = async () =>  {
+
+          
+    }
 
     return (
-        <Layout> 
+           <>
+    
              <div className="container-fluid">
                  <div className="row">
                         <div className="mt-2 col-12">
@@ -41,7 +48,10 @@ function Dashboard() {
                             <i className="pb-2 fa fa-user fa-4x" />
                         </div>
                         <h6 className="text-white text-uppercase">Customers</h6>
-                        <h1 className="text-white display-4">4</h1>
+                       { Customer.loading ? 
+                         <h1 className="text-white display-4">Loading..</h1> : 
+                         <h1 className="text-white display-4">{Customer.data ? Customer.data.length : 1 }</h1> 
+                       } 
                         </div>
                     </div>
                     </div>
@@ -51,8 +61,12 @@ function Dashboard() {
                         <div className="rotate">
                             <i className="pb-2 fab fa-product-hunt fa-4x" />
                         </div>
+                        
                         <h6 className="text-white text-uppercase">Products</h6>
-                        <h1 className="text-white  display-4">3</h1>
+                        { Product.loading ? 
+                        <h1 className="text-white  display-4">Loading..</h1> :
+                        <h1 className="text-white  display-4">{Product.data ? Product.data.length : 1}</h1> 
+                        }
                         </div>
                     </div>
                     </div>
@@ -63,7 +77,10 @@ function Dashboard() {
                             <i className="pb-2 fas fa-shopping-cart fa-4x" />
                         </div>
                         <h6 className="text-white  text-uppercase">Orders</h6>
-                        <h1 className="text-white  display-4">3</h1>
+                        { Order.loading ? 
+                        <h1 className="text-white  display-4">Loading..</h1>:
+                        <h1 className="text-white  display-4">{Order.data ? Order.data.length : 0 }</h1>
+                        }   
                         </div>
                     </div>
                     </div>
@@ -73,14 +90,20 @@ function Dashboard() {
                         <div className="rotate">
                             <i className="fas fa-money-bill-alt pb-2 fa-4x" />
                         </div>
-                        <h6 className="text-white  text-uppercase">Payments</h6>
-                        <h1 className="text-white  display-4">136457</h1>
+                        <h6 className="text-white  text-uppercase">Categories</h6>
+                        { Category.loading ?
+                        <h1 className="text-white  display-4">Loading..</h1>:
+                        <h1 className="text-white  display-4">{Category.data ? Category.data.length : 0  }</h1>
+                        }
                         </div>
                     </div>
                     </div>
                 </div>
               </div>
-        </Layout>
+              <div className="container-fluid">
+                
+              </div>
+           </> 
     )
 }
 
