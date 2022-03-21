@@ -1,4 +1,4 @@
-import {fetch3} from '../../utils'
+import {fetch3,fetch5} from '../../utils'
 import { toast } from 'react-toastify';
 
 
@@ -8,15 +8,17 @@ import { toast } from 'react-toastify';
 export  const Get = ()  => async (dispatch) =>   
 { 
     dispatch({type:'Product:update',payload:{loading:true}});
-    let response = await fetch3(`${process.env.REACT_APP_API_URL}/products`,false,'get'); 
+
+    let response = await fetch5(`${process.env.REACT_APP_API_URL}/products`,false,'get'); 
     if(response.success){
         let data = response.data.data.length ? response.data.data : false;
-        dispatch({type:'Product:update',payload:{data:data,loading:false}});
+        dispatch({type:'Product:update',payload:{data:data}});
     }else{
-
         toast.error("Something Wen Wrong Failed To Load Products");
         dispatch({type:'Product:update',payload:{data:false}});
     }
+    
+    dispatch({type:'Product:update',payload:{loading:false}});
 }
 
 
@@ -25,22 +27,27 @@ export  const Get = ()  => async (dispatch) =>
 //
 //
 // Add
-export const Add = (data)  => async (dispatch) =>   
+export const Add = (data)  => async (dispatch,getState) =>   
 {
-        dispatch({type:'Product:update',payload:{success:false}});
-        let response = await fetch3(`${process.env.REACT_APP_API_URL}/products/store`,data,'post'); 
+        dispatch({type:'Product:update',payload:{success:false,loading:true}});
+        let response = await fetch5(`${process.env.REACT_APP_API_URL}/products/store`,data,'post'); 
         if(response.success){
 
-            dispatch({type:'Product:update',payload:{validations:false,success:true}});
+            let data = getState().ProductReducer.data ? getState().ProductReducer.data : [];
+            data.push(response.data.data);
+            dispatch({type:'Product:update',payload:{data:data,validations:false,success:true,loading:false}});
             toast.info("Product Created Success");
+        
         }else{
 
             if(response.data.validations){
                 dispatch({type:'Product:update',payload:{validations:response.data.validations}});
             }else{
-                  toast.error(response.message);
+                  toast.error('Eror Found Product Not Created');
                   dispatch({type:'Product:update',payload:{validations:false}});
             }
+
+            dispatch({type:'Product:update',payload:{loading:false}});
         }
   }
 
@@ -50,21 +57,25 @@ export const Add = (data)  => async (dispatch) =>
 //
 //
 // Update
-export const Update = (id,data)  => async (dispatch) =>   
+export const Update = (id,data)  => async (dispatch,getState) =>   
 {
-    let response = await fetch3(`${process.env.REACT_APP_API_URL}/products/update/${id}`,data,'post'); 
+    dispatch({type:'Product:update',payload:{loading:true}});
+    let response = await fetch5(`${process.env.REACT_APP_API_URL}/products/update/${id}`,data,'post'); 
     if(response.success){
-        dispatch({type:'Product:update',payload:{validations:false}});
+
+        let data = getState().ProductReducer.data ? getState().ProductReducer.data : [];
+        let newdata = await  data.map(obj => { return obj.id == id ? response.data.data : obj });
+        dispatch({type:'Product:update',payload:{data:newdata,validations:false,loading:false}});
         toast.info("Product Updated Success");
+
 
     }else{
         if(response.data.validations){
                 dispatch({type:'Product:update',payload:{validations:response.data.validations}});
         }else{
-                toast.error(response.message);
-                dispatch({type:'Product:update',payload:{validations:false}});
+                toast.error('Error Found Product Updated Success');
         }
-
+        dispatch({type:'Product:update',payload:{loading:false}});
     }
 }
 
@@ -96,15 +107,19 @@ export  const Edit = (id)  => async (dispatch,getState) =>
 // 
 // 
 // Delete
-export  const Delete = (id)  => async (dispatch) =>   
+export  const Delete = (id)  => async (dispatch,getState) =>   
 {
-    let response = await fetch3(`${process.env.REACT_APP_API_URL}/products/delete/${id}`,false,'get'); 
+    dispatch({type:'Product:update',payload:{loading:true}});
+    let response = await fetch5(`${process.env.REACT_APP_API_URL}/products/delete/${id}`,false,'get'); 
     if(response.success){
+
+            let data = getState().ProductReducer.data ? getState().ProductReducer.data : [];
+            let newdata = data.filter(obj => obj.id != id);
+            dispatch({type:'Product:update',payload:{data:newdata,loading:false}});
             toast.info('Product Deleted Success');
-            dispatch(Get());
+
     }else{
-            toast.error(response.message);
-            dispatch({type:'Product:update',payload:{}});
-            dispatch({type:'Global:update',payload:{loading:false}});
+            toast.error('Error Found Product Not Deleted');
+            dispatch({type:'Product:update',payload:{loading:false}});
     }
 }

@@ -34,6 +34,7 @@ function Create() {
                     sku:'',
                     category_id:''
                 });
+                Setthumbnail(false);
         }
     },[success])
 
@@ -44,38 +45,26 @@ function Create() {
         setForm({...form,[name]:value})
     }
 
+    
 
     const imgChange = (e) => {
-        getBase64(e.target.files[0],(res)=>{
-            Setthumbnail(res);
-        });
+        Setthumbnail(e.target.files[0]);
+
     }
-
-
-   const getBase64 = (file, cb) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
-    }
-
 
     const handle = async (e) => {
             e.preventDefault();
-            let senddata = {
-                title:form.title,
-                description:form.description,
-                thumbnail:thumbnail,
-                price:form.price,
-                sku:form.sku,
-                category_id:form.category_id,
-            };
 
-            dispatch(Add(senddata));
+        let formdata = new FormData();
+        formdata.append('title',form.title);
+        formdata.append('des',form.des);
+        formdata.append('price',form.price);
+        formdata.append('sku',form.sku);
+        formdata.append('category_id',form.category_id);
+        if(thumbnail){
+            formdata.append('thumbnail',thumbnail);
+        }
+        dispatch(Add(formdata));
     }
 
     return (<>
@@ -146,7 +135,7 @@ function Create() {
                                 <div className="pb-1 form-group">
                                 <label className='form-label' >Thumbnail</label>
                                 <input type="file" onChange={imgChange} className="form-control"  />
-                                { thumbnail ? <img className='thumbnail' src={thumbnail}   /> : ''}
+                                 { thumbnail ? <img className='thumbnail' src={thumbnail}   /> : ''}
                                  </div>
                                 </div>
 

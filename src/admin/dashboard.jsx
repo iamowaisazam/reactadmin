@@ -50,7 +50,7 @@ function Dashboard() {
                         <h6 className="text-white text-uppercase">Customers</h6>
                        { Customer.loading ? 
                          <h1 className="text-white display-4">Loading..</h1> : 
-                         <h1 className="text-white display-4">{Customer.data ? Customer.data.length : 1 }</h1> 
+                         <h1 className="text-white display-4">{Customer.data ? Customer.data.length : 0 }</h1> 
                        } 
                         </div>
                     </div>
@@ -65,7 +65,7 @@ function Dashboard() {
                         <h6 className="text-white text-uppercase">Products</h6>
                         { Product.loading ? 
                         <h1 className="text-white  display-4">Loading..</h1> :
-                        <h1 className="text-white  display-4">{Product.data ? Product.data.length : 1}</h1> 
+                        <h1 className="text-white  display-4">{Product.data ? Product.data.length : 0}</h1> 
                         }
                         </div>
                     </div>
@@ -102,8 +102,8 @@ function Dashboard() {
               </div>
               <div className="container-fluid">
                 
-              </div>
-           </> 
+               </div>
+        </> 
     )
 }
 

@@ -1,4 +1,4 @@
-import {fetch3} from '../../utils'
+import {fetch5} from '../../utils'
 import { toast } from 'react-toastify';
 
 
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 export  const Get = ()  => async (dispatch) =>   
 { 
     dispatch({type:'Order:update',payload:{loading:true}});
-    let response = await fetch3(`${process.env.REACT_APP_API_URL}/orders`,false,'get'); 
+    let response = await fetch5(`${process.env.REACT_APP_API_URL}/orders`,false,'get'); 
     if(response.success){
         
         let data = response.data.data.length ? response.data.data : false;

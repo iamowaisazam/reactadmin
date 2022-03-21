@@ -23,14 +23,13 @@ export default function Page() {
 
     useEffect(() => {
 
-         if(single){
+       if(single){
              setForm({
                 title:single.title,
                 des:single.des,
              });
-             Setthumbnail(single.thumbnail);
-         }
-    
+       }
+       
     }, [single])
     
 
@@ -41,31 +40,20 @@ export default function Page() {
     }
 
     const imgChange = (e) => {
-        getBase64(e.target.files[0],(res)=>{
-            Setthumbnail(res);
-        });
-    }
-
-   const getBase64 = (file, cb) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+        Setthumbnail(e.target.files[0]);
     }
 
     const handle = async (e) => {
-        e.preventDefault();
-
-        let senddata = {
-            title:form.title,
-            des:form.des,
-            thumbnail:thumbnail,
-        };
-        dispatch(Update(id,senddata));
+    
+        e.preventDefault();    
+        let formdata = new FormData();
+        formdata.append('title',form.title);
+        formdata.append('des',form.des);
+        if(thumbnail){
+            formdata.append('thumbnail',thumbnail);
+        }
+    
+        dispatch(Update(id,formdata));
     }
 
     return (<>
@@ -106,7 +94,7 @@ export default function Page() {
                                 <div className="pb-1 form-group">
                                 <label className='form-label' >Thumbnail</label>
                                 <input type="file" onChange={imgChange} className="form-control"  />
-                                { thumbnail ? <img className='thumbnail' src={thumbnail}   /> : ''}
+                                { single?.thumbnail ? <img className='thumbnail' src={single.thumbnail} /> : ''}
                                 </div>
                                 </div>
 
@@ -127,7 +115,7 @@ export default function Page() {
                         </form> : ''
                          }
 
-</> 
+  </> 
                         }
                     </div>
                 </div>
@@ -164,7 +152,8 @@ export default function Page() {
             }
 
             .thumbnail{
-                width:50px;
+                width: 100px;
+                height: 100px;
                 padding-top:5px;
 
             }

@@ -14,7 +14,6 @@ function Create() {
     });
 
     useEffect(() => {
-    
         return () => {
            dispatch({type:'Category:update',payload:{validation:false,success:false}});
         }
@@ -27,8 +26,7 @@ function Create() {
                     title:'',
                      des:'',
                 });
-                Setthumbnail(false);
-            
+                Setthumbnail(false);            
         }
     },[success])
 
@@ -40,32 +38,19 @@ function Create() {
     }
 
     const imgChange = (e) => {
-        getBase64(e.target.files[0],(res)=>{
-            Setthumbnail(res);
-        });
+        Setthumbnail(e.target.files[0]);
     }
-
-
-   const getBase64 = (file, cb) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
-    }
-
+    
     const handle = async (e) => {
 
         e.preventDefault();
-        let senddata = {
-            title:form.title,
-            des:form.des,
-            thumbnail:thumbnail,
-        };
-        dispatch(Add(senddata));
+        let formdata = new FormData();
+        formdata.append('title',form.title);
+        formdata.append('des',form.des);
+        if(thumbnail){
+            formdata.append('thumbnail',thumbnail);
+        }
+        dispatch(Add(formdata));
     }
 
     return (<>

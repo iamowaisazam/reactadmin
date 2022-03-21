@@ -1,4 +1,4 @@
-import {fetch3} from '../../utils'
+import {fetch5} from '../../utils'
 import { toast } from 'react-toastify';
 
 
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 export  const Get = ()  => async (dispatch) =>   
 { 
     dispatch({type:'Category:update',payload:{loading:true}});
-    let response = await fetch3(`${process.env.REACT_APP_API_URL}/categories`,false,'get'); 
+    let response = await fetch5(`${process.env.REACT_APP_API_URL}/categories`,false,'get'); 
     if(response.success){
         let data = response.data.data.length ? response.data.data : false;
         dispatch({type:'Category:update',payload:{data:data,loading:false}});
@@ -24,21 +24,24 @@ export  const Get = ()  => async (dispatch) =>
 //
 //
 // Add_Categories
-export  const Add = (data)  => async (dispatch) =>   
+export  const Add = (data)  => async (dispatch,getState) =>   
 {
         dispatch({type:'Category:update',payload:{success:false}});
-        let response = await fetch3(`${process.env.REACT_APP_API_URL}/categories/store`,data,'post'); 
+        let response = await fetch5(`${process.env.REACT_APP_API_URL}/categories/store`,data,'post'); 
         if(response.success){
 
-            dispatch({type:'Category:update',payload:{validations:false,success:true}});
+            let data = getState().CategoryReducer.data ? getState().CategoryReducer.data : [];
+            data.push(response.data.data);
+            dispatch({type:'Category:update',payload:{data:data,validations:false,success:true}});
             toast.info("Category Created Success");
+                
         }else{
 
             if(response.data.validations){
                 dispatch({type:'Category:update',payload:{validations:response.data.validations}});
             }else{
-                  toast.error(response.message);
-                  dispatch({type:'Category:update',payload:{validations:false}});
+                toast.error('Eror Found Category Not Created');
+                dispatch({type:'Category:update',payload:{validations:false}});
             }
         }
   }
@@ -49,22 +52,24 @@ export  const Add = (data)  => async (dispatch) =>
 //
 //
 // Update_Customers
-export  const Update = (id,data)  => async (dispatch) =>   
-{
-        
-        let response = await fetch3(`${process.env.REACT_APP_API_URL}/categories/update/${id}`,data,'post'); 
+export  const Update = (id,data)  => async (dispatch,getState) =>   
+{       
+         dispatch({type:'Category:update',payload:{loading:true}});
+        let response = await fetch5(`${process.env.REACT_APP_API_URL}/categories/update/${id}`,data,'post'); 
         if(response.success){
 
-            dispatch({type:'Category:update',payload:{validations:false}});
+            let data = getState().CategoryReducer.data ? getState().CategoryReducer.data : [];
+            let newdata = await  data.map(obj => { return obj.id == id ? response.data.data : obj });
+            dispatch({type:'Category:update',payload:{data:newdata,validations:false,loading:false}});
             toast.info("Categories Updated Success");
 
         }else{
 
-            if(response.data.validations){
-                dispatch({type:'Category:update',payload:{validations:response.data.validations}});
+            if(response?.data?.validations){
+                dispatch({type:'Category:update',payload:{validations:response.data.validations,loading:false}});
             }else{
-                  toast.error(response.message);
-                  dispatch({type:'Category:update',payload:{validations:false}});
+                toast.error('Error Found Category Not Updated');
+                dispatch({type:'Category:update',payload:{validations:false,loading:false}});
             }
         }
   }
@@ -80,8 +85,7 @@ export  const Edit = (id)  => async (dispatch,getState) =>
     if(data){
 
            let single = await data.find((element) => element.id == id ); 
-           if(single){
-               
+           if(single){       
                 dispatch({type:'Category:update',payload:{
                     single:single,
                     validations:false,
@@ -89,7 +93,6 @@ export  const Edit = (id)  => async (dispatch,getState) =>
                 });
             }
     }
-
 }
 
 
@@ -98,17 +101,19 @@ export  const Edit = (id)  => async (dispatch,getState) =>
 //
 //
 // Delete
-
-export  const Delete = (id)  => async (dispatch) =>   
-{
-    
-        let response = await fetch3(`${process.env.REACT_APP_API_URL}/categories/delete/${id}`,false,'get'); 
+export  const Delete = (id)  => async (dispatch,getState) =>   
+{       
+        dispatch({type:'Category:update',payload:{loading:true}});
+        let response = await fetch5(`${process.env.REACT_APP_API_URL}/categories/delete/${id}`,false,'get'); 
         if(response.success){
-             toast.info('Category Deleted Success');
-             dispatch(Get());
-        }else{
-             toast.error(response.message);
-             dispatch({type:'Category:update',payload:{}});
-        }
+            
+            let data = getState().CategoryReducer.data ? getState().CategoryReducer.data : [];
+            let newdata = data.filter(obj => obj.id != id);
+            dispatch({type:'Category:update',payload:{data:newdata,loading:false}});
+            toast.info('Category Deleted Success');
 
+        }else{
+             toast.error('Error Found Category Not Dleted');
+             dispatch({type:'Category:update',payload:{loading:false}});
+        }
 }

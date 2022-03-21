@@ -80,7 +80,9 @@ return (<>
                     <Routes>
                             <Route path='/admin/' element={ user ? <Layout/> : <Navigate  to="/admin/login" /> }>
                                 <Route  path="profile" element={<Profile />}  /> 
-                                <Route index  element={ <Dashboard />}  />
+                                {/* <Route index  element={ <Dashboard />}  /> */}
+                                <Route path='dashboard'  element={ <Dashboard />}  />
+                                
 
                                 <Route  path="customers/index" element={<CustomersIndex />}  /> 
                                 <Route  path="customers/create" element={<CustomersCreate />}  /> 
@@ -93,8 +95,7 @@ return (<>
                                 <Route  path="products/index" element={<ProductsIndex />}  /> 
                                 <Route  path="products/create" element={<ProductsCreate />}  /> 
                                 <Route  path="products/edit/:id" element={<ProductsEdit />}  /> 
-
-                                
+           
                                 <Route  path="orders/index" element={<OrdersIndex />}  />                         
                             </Route>
                         
@@ -102,7 +103,8 @@ return (<>
                             <Route  path="/admin/login" element={ user ? <Navigate  to="/admin" /> : <Login /> } />  
                             <Route  path="/admin/register" element={ user ? <Navigate   to="/admin" /> : <Register />} /> 
                             <Route  path="*" element={<NotFound />}  />
-                    </Routes> 
+                     
+                      </Routes> 
                 </> : <Loader /> 
             }
 

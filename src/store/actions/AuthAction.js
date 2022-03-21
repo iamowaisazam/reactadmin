@@ -1,26 +1,29 @@
-import {fetch3} from '../../utils'
+import {fetch5} from '../../utils'
 import { toast } from 'react-toastify';
+import {ResetApp,LoadData} from './GlobalAction'
 
 //
 //
 // Login_Auth
 export  const Login_Auth = (data)  => async (dispatch) =>   
 {
-         
+
         dispatch({type:'Global:update',payload:{loading:true}});
-        let response = await fetch3(`${process.env.REACT_APP_API_URL}/login`,data,'post'); 
+        let response = await fetch5(`${process.env.REACT_APP_API_URL}/login`,data,'post'); 
         if(response.success){
             localStorage.setItem('token',response.data.token);
             dispatch({type:'Auth:update',payload:{token:response.data.token,user: response.data.user}});
             toast.info("Logged In Succes");
+            dispatch(LoadData());
 
         }else{
 
-              if(response.data.message){
-                  toast.error(response.data.message);
-              }else{
-                  toast.error("Failed To Login");
-              }           
+            if(response.data.message){
+              toast.error(response.data.message);
+            }else{
+              toast.error("Failed To Login");
+            }
+
             dispatch({type:'Auth:update',payload:{user:false,token:false}});
         }
 
@@ -39,7 +42,7 @@ export const Register_Auth = (data)  => async (dispatch) =>
       dispatch({type:'Global:update',payload:{loading:true}});
       dispatch({type:'Auth:update',payload:{validations:false,success:false}});
 
-      let response = await fetch3(`${process.env.REACT_APP_API_URL}/register`,data,'post');
+      let response = await fetch5(`${process.env.REACT_APP_API_URL}/register`,data,'post');
       if(response.success){
              toast.info("Register Success");
              dispatch({type:'Auth:update',payload:{validations:false,success:true}});
@@ -69,7 +72,7 @@ export const getAuth = () => async (dispatch,getState) =>
       dispatch({type:'Global:update',payload:{loading:true}});
       let token = localStorage.getItem('token');
       if(token){
-            let response = await fetch3(`${process.env.REACT_APP_API_URL}/auth`,{},'post');
+            let response = await fetch5(`${process.env.REACT_APP_API_URL}/auth`,{},'post');
             if(response.success){
                   dispatch({type:'Auth:update',payload:{token:token,user:response.data.user}});
             }else{
@@ -94,15 +97,15 @@ export const Logout_Auth = () => async (dispatch,getState) =>
 {
 
       dispatch({type:'Global:update',payload:{loading:true}});
-      let response = await fetch3(`${process.env.REACT_APP_API_URL}/logout`,{},'post');
+      let response = await fetch5(`${process.env.REACT_APP_API_URL}/logout`,{},'post');
       if(response.success){
             localStorage.removeItem('token');
-            dispatch({type:'Auth:update',payload:{token:false,user:false}});
+            dispatch(ResetApp());
             toast.info('Logout Successfully'); 
       }else{
             if(response.networkError == undefined){
                   toast.info('Token Expired'); 
-                  dispatch({type:'Auth:update',payload:{token:false,user:false}});
+                  dispatch(ResetApp());
             }
       }
       dispatch({type:'Global:update',payload:{loading:false}});
@@ -119,16 +122,7 @@ export const Profile_Auth = (data) => async (dispatch,getState) =>
 
       dispatch({type:'Global:update',payload:{loading:true}});
 
-      let newdata = {
-           name: data.name,
-           email: data.email,
-      };
-
-      if(data.password != ''){
-        newdata.password = data.password;
-      }
-
-      let response = await fetch3(`${process.env.REACT_APP_API_URL}/auth-update`,newdata,'post');     
+      let response = await fetch5(`${process.env.REACT_APP_API_URL}/auth-update`,data,'post');     
       if(response.success){
 
             dispatch({type:'Auth:update',payload:{
@@ -140,9 +134,10 @@ export const Profile_Auth = (data) => async (dispatch,getState) =>
       }else{
 
             if(response.data.validations){
-              dispatch({type:'Auth:update',payload:{validations:response.data.validations}});
+               dispatch({type:'Auth:update',payload:{validations:response.data.validations}});
             }else{
-                  toast.warning(response.message); 
+               dispatch({type:'Auth:update',payload:{validations:false}});
+               toast.warning('Profile Not Updated'); 
             }
       }
 

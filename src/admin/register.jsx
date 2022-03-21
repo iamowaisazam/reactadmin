@@ -12,6 +12,7 @@ function Register() {
 
     useEffect(() => {
         
+        
         return () => {
             dispatch({type:'Auth:update',payload:{validation:false,success:false}});
         }

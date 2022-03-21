@@ -11,7 +11,7 @@ function Index() {
         
     useEffect(() => {
     
-        dispatch(Get());       
+        // dispatch(Get());       
     },[])
 
     const del = async (id) => {
@@ -44,20 +44,18 @@ function Index() {
                 </div>
                 <div className="card">
                     <div className="card-body">
-
+                        <div className='table-responsive' >
                         { loading ? <p className='text-center' >Loading Categories</p> :
-                        <table>
+                        <table className='table' >
                             <tbody>
                                 <tr>
                                     <th>#</th>
-                                    <th>Thumbnail</th>
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Action</th>
                               </tr>{ data ? data.map((module,key) => 
                                     { return <tr key={key}>
                                         <td>{key + 1}</td>
-                                        <td> <img className='thumbnail' src={module.thumbnail}/></td>
                                         <td>{module.title}</td>
                                         <td>{module.des}</td>
                                         <td className="actions" >
@@ -71,6 +69,7 @@ function Index() {
                             </tbody>
                         </table> 
                         }
+                        </div>
                     </div>
                 </div>
            </div>
@@ -120,10 +119,9 @@ function Index() {
 
             .thumbnail{
                 width:50px;
+                height:33px;
             }
-
-    
-                    
+            
           `}</style>
  </>)
 }

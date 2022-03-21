@@ -11,7 +11,7 @@ function Index() {
         
     useEffect(() => {
     
-        dispatch(Get());       
+        // dispatch(Get());       
     },[])
 
     const del = async (id) => {
@@ -44,9 +44,10 @@ function Index() {
                 </div>
                 <div className="card">
                     <div className="card-body">
+                    <div className='table-responsive' >
 
                         { loading ? <p className='text-center' >Loading Orders</p> :
-                        <table>
+                        <table className='table' >
                             <tbody>
                                 <tr>
                                     <th>#</th>
@@ -72,6 +73,7 @@ function Index() {
                             </tbody>
                         </table> 
                         }
+                        </div>
                     </div>
                 </div>
            </div>

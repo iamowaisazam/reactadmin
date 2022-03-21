@@ -8,6 +8,7 @@ export default function Page() {
     const {id} = useParams();
     const dispatch = useDispatch();
     let {validations,single,data,loading} = useSelector(store => store.ProductReducer);
+    let Categories = useSelector(store => store.CategoryReducer);
     const [thumbnail,Setthumbnail] = useState(false);
     const [form,setForm] = useState({
         title:'',
@@ -25,14 +26,16 @@ export default function Page() {
 
     useEffect(() => {
          if(single){
+             
              setForm({
                 title:single.title,
-                description:single.description,
+                description:single.description ? single.description : '',
                 price:single.price,
-                sku:single.sku,
+                sku:single.sku ? single.sku : '',
                 category_id:single.category_id
              });
-             Setthumbnail(single.thumbnail);
+             
+        
          }
     }, [single])
     
@@ -44,35 +47,24 @@ export default function Page() {
     }
 
     const imgChange = (e) => {
-        getBase64(e.target.files[0],(res)=>{
-            Setthumbnail(res);
-        });
-    }
-
-   const getBase64 = (file, cb) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            cb(reader.result)
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+        Setthumbnail(e.target.files[0]);
     }
 
     const handle = async (e) => {
         e.preventDefault();
 
-        let senddata = {
-            title:form.title,
-            description:form.description,
-            thumbnail:thumbnail,
-            price:form.price,
-            sku:form.sku,
-            category_id:form.category_id,
-        };
+        let formdata = new FormData();
+        formdata.append('title',form.title);
+        formdata.append('description',form.description);
+        formdata.append('price',form.price);
+        formdata.append('sku',form.sku);
+        formdata.append('category_id',form.category_id);
 
-        dispatch(Update(id,senddata));
+        if(thumbnail){
+            formdata.append('thumbnail',thumbnail);
+        }
+
+        dispatch(Update(id,formdata));
 
     }
 
@@ -130,12 +122,14 @@ export default function Page() {
                             <div className="col-md-4">
                             <div className="pb-1 form-group">
                             <label className='form-label' >Category</label>
+                            {Categories.loading ? <span className='d-block' >Loading Category</span> :
                             <select className='form-control' value={form.category_id}  onChange={inputChange} name="category_id" >
                                <option value="" >Select Category</option>
-                                { data ? data.map((module,key) => {
+                                { Categories.data ? Categories.data.map((module,key) => {
                                     return <option key={key} value={module.id}>{module.title}</option>
                                   }) : '' }
                             </select>
+                           }
                               { validations?.category_id? <p> {validations.category_id} </p> : ''}
                              </div>
                             </div>
@@ -144,7 +138,7 @@ export default function Page() {
                             <div className="pb-1 form-group">
                             <label className='form-label' >Thumbnail</label>
                             <input type="file" onChange={imgChange} className="form-control"  />
-                              { thumbnail ? <img className='thumbnail' src={thumbnail}   /> : ''}
+                              { single?.thumbnail ? <img className='thumbnail' src={single.thumbnail} /> : ''}
                              </div>
                             </div>
                             

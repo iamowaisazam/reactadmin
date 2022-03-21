@@ -12,6 +12,7 @@ function Profile() {
     const dispatch = useDispatch();
     let {loading,user,validations,success} = useSelector( store => store.AuthReducer);
     const [form,setForm] = useState({name:'',email:'',password:''});
+    const [thumbnail,Setthumbnail] = useState(false);
         
     useEffect(() => {
 
@@ -20,6 +21,8 @@ function Profile() {
             email:user.email,
             password:'',
         })
+
+        Setthumbnail(user.thumbnail);
         
     },[])
 
@@ -28,10 +31,27 @@ function Profile() {
         let value= e.target.value;
         setForm({...form,[name]:value})
     }
+    const imgChange = (e) => {
+        Setthumbnail(e.target.files[0]);
+    }
 
     const handle = async (e) => {
         e.preventDefault();
-        dispatch(Profile_Auth(form));
+
+        let formdata = new FormData();
+        formdata.append('email',form.email);
+        formdata.append('name',form.name);
+
+        if(thumbnail){
+            formdata.append('thumbnail',thumbnail);
+        }
+
+        if(form.password != ''){
+            formdata.append('password',form.password);
+        }
+
+        dispatch(Profile_Auth(formdata));
+
     }
 
     return (<>
@@ -54,7 +74,7 @@ function Profile() {
             <div className='profile-container container-fluid' >
                 <div className="card">
                     <div className="card-body">
-                        <form onSubmit={handle} className='py-2' >
+                        <form  onSubmit={handle} className='py-2' >
                             <div className="pb-1 form-group">
                                 <label className='form-label' >Username</label>
                                 <input onChange={inputChange} value={form.name} name='name' className="form-control"  />
@@ -70,6 +90,11 @@ function Profile() {
                                 <label className='form-label'>Password</label>
                                 <input onChange={inputChange} value={form.password} name='password' type="password" className="form-control" placeholder='leave blank' />
                                 { validations?.password? <p> {validations.password} </p> : ''}
+                            </div>
+                            <div className="pb-1 form-group">
+                                <label className='form-label'>Thumbnail</label>
+                                <input onChange={imgChange}  type="file" className="form-control" />
+                                { thumbnail ? <img className='thumbnail' src={thumbnail ? thumbnail : ''} /> : ''  }
                             </div>
                             <div className=" pt-3 pb-1 form-group text-center">
                                 <input type="submit" className='btn btn-primary' value="Update" /> 
@@ -95,6 +120,11 @@ function Profile() {
                 color:red;
                 padding-top:11px;
                 margin-bottom:0px;
+            }
+
+            .thumbnail{
+                width:100px;
+                height:100px;
             }
                     
           `}</style>

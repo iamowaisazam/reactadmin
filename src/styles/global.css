@@ -275,6 +275,11 @@ a{
 }
 
 
+
+
+
+
+
 /* Admin Panel */
 
 ::-webkit-scrollbar {
@@ -309,20 +314,54 @@ a{
 /* // No media query for `xs` since this is the default in Bootstrap */
 
 /* // Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-
-
-
- }
-
-/* // Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-
-
-
+@media screen and (max-width: 576px) {
+    
+    .page-title-box{
+        flex-direction: column !important;
+    }
+    
+    .page-title-box li {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
 
 }
+
+
+  /* // Medium devices (tablets, 768px and up) */
+@media screen and (max-width: 768px) {
+    
+    .main-content .list-container {
+        position: absolute;
+        z-index: 01;
+        background: #3281f2;
+        height: calc(100% - 106.63px)!important;
+    }
+
+    .link-title {
+        color: white!important;
+    }
+
+    .icon {
+        color: white!important;
+    }
+
+    .sidebar-hide .list-container  {
+        display: none!important;
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
 
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {

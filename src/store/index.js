@@ -23,7 +23,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducers,composeEnhancers(applyMiddleware(thunkMiddleware)));
 
 store.subscribe(() =>{
-    console.log('Updated State value',store.getState());
+    
 })
 
 export default store

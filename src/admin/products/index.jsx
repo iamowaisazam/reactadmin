@@ -11,7 +11,7 @@ export default function Page() {
         
     useEffect(() => {
     
-        dispatch(Get());       
+        // dispatch(Get());       
     },[])
 
     const del = async (id) => {
@@ -44,13 +44,13 @@ export default function Page() {
                 </div>
                 <div className="card">
                     <div className="card-body">
+                    <div className='table-responsive' >
 
                         { loading ? <p className='text-center' >Loading Products</p> :
-                        <table>
+                        <table className='table' >
                             <tbody>
                                 <tr>
                                     <th>#</th>
-                                    <th>Thumbnail</th>
                                     <th>Title</th>
                                     <th>Price</th>
                                     <th>Sku</th>
@@ -59,7 +59,6 @@ export default function Page() {
                               </tr>{ data ? data.map((module,key) => 
                                     { return <tr key={key}>
                                         <td> {key + 1} </td>
-                                        <td> <img className='thumbnail' src={module.thumbnail}  /> </td>
                                         <td>{module.title}</td>
                                         <td>{module.price}</td>
                                         <td>{module.sku}</td>
@@ -75,6 +74,7 @@ export default function Page() {
                         </table> 
                         
                         }
+                        </div>
                     </div>
                 </div>
            </div>
