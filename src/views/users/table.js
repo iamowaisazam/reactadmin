@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useSelector,useDispatch } from 'react-redux';
+import {GetUserListAction,setRowsPerPage,setPage,DeleteUserListAction} from "../../store/users/GetUserListSlice";
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -10,9 +12,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button, IconButton, useTheme } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
-import Users from "../../data/users";
 import { useNavigate } from "react-router";
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -20,50 +20,28 @@ import EditIcon from '@mui/icons-material/Edit';
 
   export default function DataTable() {
 
-    const [tableData, settableData] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const {data,loading,errors,rowsPerPage,page} = useSelector((state) => state.GetUserListSlice);
+    const dispatch = useDispatch();
     let navigate = useNavigate();
-    
 
     React.useEffect(() => {
-
-      settableData(Users);
-
+        dispatch(GetUserListAction());
+        console.log('component Call');
     },[])
 
     const handleChangePage = (event, newPage) => {
-       setPage(newPage);
+      dispatch(setPage(newPage));
     };
 
-    const handleChangeRowsPerPage = (event) => {
-       setRowsPerPage(+event.target.value);
-       setPage(0);
-    };
-
-    const handleDeleteRowsItem = (id) => {
-    
-        let deletedData = tableData.filter((item) => {
-          if(item.id != id){
-            return item;
-          }else{
-            return false;
-          }
-        });
-
-        // console.log(deletedData);
-
-        settableData(deletedData);
-    };
-
-
+   
   return (
 
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      {loading == true ? 'Loading' : <>
       <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow   >
+            <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell>Full Name</TableCell>
                 <TableCell>Email</TableCell>
@@ -71,17 +49,18 @@ import EditIcon from '@mui/icons-material/Edit';
                 <TableCell sx={{textAlign:'center'}}  >Action</TableCell>
             </TableRow>
           </TableHead>
+          
           <TableBody>
-            {tableData
+            {data
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.first_name} {row.last_name}</TableCell>
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.phone}</TableCell>
-                    <TableCell   >
+                    <TableCell>
                       <Stack sx={{justifyContent:'center'}} direction="row" spacing={2}>
                         <IconButton onClick={() => {navigate("/profile/"+row.id)}} aria-label="Example">
                           <PersonIcon />
@@ -89,7 +68,7 @@ import EditIcon from '@mui/icons-material/Edit';
                         <IconButton onClick={() => {navigate("/users/edit/"+row.id)}}  aria-label="Example">
                           <EditIcon />
                         </IconButton>
-                        <IconButton onClick={() => handleDeleteRowsItem(row.id)} aria-label="Example">
+                        <IconButton onClick={() => dispatch(DeleteUserListAction({id:row.id}))} aria-label="Example">
                           <DeleteIcon />
                         </IconButton>
                       </Stack>
@@ -103,13 +82,16 @@ import EditIcon from '@mui/icons-material/Edit';
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={tableData.length}
+        count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={(e) => {
+          dispatch(setRowsPerPage(+e.target.value));
+          dispatch(setPage(0));
+        } }
       />
+      </>}
     </Paper>
-
   );
 }

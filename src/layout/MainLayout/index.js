@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import Alert from "../../ui-component/Alert";
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -11,8 +12,8 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Customization from '../Customization';
 import navigation from './Sidebar/MenuList/menu-items';
-import { drawerWidth } from 'store/constant';
-import { SET_MENU } from 'store/actions';
+import { drawerWidth } from 'store/customizationReducer/constant';
+import { SET_MENU } from 'store/customizationReducer/actions';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
@@ -87,6 +88,7 @@ const MainLayout = () => {
 
       {/* main content */}
       <Main theme={theme} open={leftDrawerOpened}>
+        <Alert />
         {/* breadcrumb */}
         <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
         <Outlet />

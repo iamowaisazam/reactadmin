@@ -12,7 +12,7 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const UserIndex = Loadable(lazy(() => import('views/users/index')));
 const UserEdit = Loadable(lazy(() => import('views/users/edit')));
 const UserCreate = Loadable(lazy(() => import('views/users/create')));
-const UserProfile = Loadable(lazy(() => import('views/profile')));
+const UserProfile = Loadable(lazy(() => import('views/users/profile')));
 
 
 
