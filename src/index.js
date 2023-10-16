@@ -10,8 +10,10 @@ import App from 'App';
 import { store } from './store/index';
 
 // style + assets
-import 'assets/scss/style.scss';
+import './views/layout/assets/scss/style.scss';
 import config from './config';
+
+
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 
